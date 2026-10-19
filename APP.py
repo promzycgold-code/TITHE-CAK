@@ -8,24 +8,46 @@ st.set_page_config(page_title="Mobile Tithe Calculator", layout="centered")
 st.markdown(
     """
     <style>
+    /* Force columns to sit side-by-side on mobile without wrapping */
     [data-testid="column"] {
-        width: calc(33.3333% - 8px) !important;
-        flex: 1 1 calc(33.3333% - 8px) !important;
-        min-width: calc(33.3333% - 8px) !important;
+        width: calc(25% - 6px) !important;
+        flex: 1 1 calc(25% - 6px) !important;
+        min-width: calc(25% - 6px) !important;
     }
+    
+    /* Ensure the row container handles flex properly */
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
         gap: 8px !important;
+        margin-bottom: 8px;
     }
+    
+    /* Make buttons large, tap-friendly, and look like a real calculator app */
     button {
-        height: 5px !important;
-        font-size: 1.5rem !important;
-        font-weight: bold !important;
+        height: 70px !important;  /* Changed from 5px to 70px for mobile fingers */
+        width: 100% !important;
+        font-size: 1.6rem !important;
+        font-weight: 600 !important;
+        border-radius: 12px !important; /* Smooth rounded corners */
+        background-color: #f0f2f6 !important; /* Soft neutral button background */
+        border: none !important;
+        transition: background-color 0.1s ease;
+        
+        /* Prevent annoying mobile zoom/double-tap highlights */
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    /* Subtle tap effect for mobile */
+    button:active {
+        background-color: #e0e2e6 !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 st.title("🧮 Tithe Calculator")
 st.write("Tap the screen buttons below to type your income amount.")
