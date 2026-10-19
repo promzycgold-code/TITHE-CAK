@@ -3,6 +3,30 @@ import streamlit as st
 # Set page config for a mobile-friendly view
 st.set_page_config(page_title="Mobile Tithe Calculator", layout="centered")
 
+# --- CUSTOM CSS FOR MOBILE KEYBOARD OPTIMIZATION ---
+# This forces columns to stay side-by-side on mobile instead of stacking in a straight line
+st.markdown(
+    """
+    <style>
+    [data-testid="column"] {
+        width: calc(33.3333% - 8px) !important;
+        flex: 1 1 calc(33.3333% - 8px) !important;
+        min-width: calc(33.3333% - 8px) !important;
+    }
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+    }
+    button {
+        height: 60px !important;
+        font-size: 1.5rem !important;
+        font-weight: bold !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("🧮 Tithe Calculator")
 st.write("Tap the screen buttons below to type your income amount.")
 
