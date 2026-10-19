@@ -1,11 +1,39 @@
 import streamlit as st
-from num2words import num2words
 
 # Set page config for a mobile-friendly view
 st.set_page_config(page_title="Mobile Tithe Calculator", layout="centered")
 
 st.title("🧮 Tithe Calculator")
 st.write("Tap the screen buttons below to type your income amount.")
+
+# --- Custom Number-to-Words Engine (Replaces num2words) ---
+def number_to_words(n):
+    if n == 0: 
+        return "zero"
+    
+    units = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", 
+             "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", 
+             "seventeen", "eighteen", "nineteen"]
+    tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+    
+    words = []
+    
+    if n >= 1000000:
+        words.append(f"{number_to_words(n // 1000000)} million")
+        n %= 1000000
+    if n >= 1000:
+        words.append(f"{number_to_words(n // 1000)} thousand")
+        n %= 1000
+    if n >= 100:
+        words.append(f"{units[n // 100]} hundred")
+        n %= 100
+    if n >= 20:
+        words.append(tens[n // 10])
+        n %= 10
+    if n > 0:
+        words.append(units[n])
+        
+    return " ".join([w for w in words if w])
 
 # Initialize session state for income text if it doesn't exist
 if "income_str" not in st.session_state:
@@ -56,7 +84,6 @@ st.markdown(
 )
 
 # --- Responsive On-Screen Keyboard Grid ---
-# Using pure Streamlit buttons layout so it is 100% reliable across all devices
 keys = [
     ["1", "2", "3"],
     ["4", "5", "6"],
@@ -64,11 +91,10 @@ keys = [
     [".", "0", "C"]
 ]
 
-# Render the grid layout layout
+# Render the grid layout
 for row in keys:
     cols = st.columns(3)
     for i, key in enumerate(row):
-        # Apply distinct styling to Clear button
         if key == "C":
             if cols[i].button(key, key=f"btn_{key}", use_container_width=True, type="primary"):
                 press_key(key)
@@ -93,10 +119,10 @@ if income > 0:
     naira_part = int(fina)
     kobo_part = round((fina - naira_part) * 100)
 
-    # Convert figures to text words
-    words_format = num2words(naira_part).replace("-", " ") + " naira"
+    # Convert figures to text words using our custom engine
+    words_format = number_to_words(naira_part) + " naira"
     if kobo_part > 0:
-        words_format += f" and {num2words(kobo_part).replace('-', ' ')} kobo"
+        words_format += f" and {number_to_words(kobo_part)} kobo"
 
     # Display clean analytics cards with results
     st.metric(label="Calculated Tithe (10%)", value=f"₦{fina:,.2f}")
