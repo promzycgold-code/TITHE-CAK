@@ -8,46 +8,48 @@ st.set_page_config(page_title="Mobile Tithe Calculator", layout="centered")
 st.markdown(
     """
     <style>
-    /* Force columns to sit side-by-side on mobile without wrapping */
-    [data-testid="column"] {
-        width: calc(25% - 6px) !important;
-        flex: 1 1 calc(25% - 6px) !important;
-        min-width: calc(25% - 6px) !important;
+    /* 1. Prevent the main app wrapper from scrolling horizontally */
+    .main .block-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 2rem !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
     }
-    
-    /* Ensure the row container handles flex properly */
+
+    /* 2. Force horizontal rows to never break or wrap */
     [data-testid="stHorizontalBlock"] {
         flex-wrap: nowrap !important;
-        gap: 8px !important;
-        margin-bottom: 8px;
+        gap: 6px !important;
+        margin-bottom: 6px !important;
+        width: 100% !important;
     }
     
-    /* Make buttons large, tap-friendly, and look like a real calculator app */
+    /* 3. Force columns to scale evenly within exactly 4 columns */
+    [data-testid="column"] {
+        width: calc(25% - 5px) !important;
+        flex: 1 1 calc(25% - 5px) !important;
+        min-width: 0 !important; /* Overrides default min-width expanding constraints */
+    }
+    
+    /* 4. Proportionate, non-overflowing buttons */
     button {
-        height: 70px !important;  /* Changed from 5px to 70px for mobile fingers */
+        height: 65px !important; /* Compact desktop and mobile ceiling height */
         width: 100% !important;
-        font-size: 1.6rem !important;
+        padding: 0px !important;
+        font-size: 1.4rem !important;
         font-weight: 600 !important;
-        border-radius: 12px !important; /* Smooth rounded corners */
-        background-color: #f0f2f6 !important; /* Soft neutral button background */
-        border: none !important;
-        transition: background-color 0.1s ease;
+        border-radius: 12px !important;
         
-        /* Prevent annoying mobile zoom/double-tap highlights */
+        /* Stop tap delay & highlighting glitches on phone browsers */
         touch-action: manipulation;
         -webkit-user-select: none;
         user-select: none;
-    }
-
-    /* Subtle tap effect for mobile */
-    button:active {
-        background-color: #e0e2e6 !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 
 st.title("🧮 Tithe Calculator")
 st.write("Tap the screen buttons below to type your income amount.")
