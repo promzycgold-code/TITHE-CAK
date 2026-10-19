@@ -18,7 +18,7 @@ st.markdown(
         gap: 8px !important;
     }
     button {
-        height: 60px !important;
+        height: 5px !important;
         font-size: 1.5rem !important;
         font-weight: bold !important;
     }
@@ -117,7 +117,7 @@ keys = [
 
 # Render the grid layout
 for row in keys:
-    cols = st.columns(8)
+    cols = st.columns(3)
     for i, key in enumerate(row):
         if key == "C":
             if cols[i].button(key, key=f"btn_{key}", use_container_width=True, type="primary"):
